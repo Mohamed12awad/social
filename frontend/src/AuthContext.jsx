@@ -10,7 +10,6 @@ export const useAuth = () => {
 
 export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
-  // const [userData, setUserData] = useState(fetchData() || "");
 
   const signIn = (newToken) => {
     localStorage.setItem("token", newToken);
@@ -27,33 +26,10 @@ export const AuthProvider = ({ children }) => {
     return !!token;
   };
 
-  // var fetchData = async () => {
-  //   if (token) {
-  //     try {
-  //       const response = await axios
-  //         .get("http://localhost:5000/api/users/singleuser", {
-  //           headers: {
-  //             "Content-Type": `application/json`,
-  //             Authorization: `${token}`,
-  //           },
-  //         })
-  //         .then((data) => {
-  //           return data;
-  //         });
-  //     } catch (error) {
-  //       console.error("Error data:", error.response);
-  //       return null;
-  //     }
-  //   } else {
-  //     return null;
-  //   }
-  // };
-
   return (
     <AuthContext.Provider
       value={{
         token,
-        // userData,
         signIn,
         signOut,
         isAuthenticated,

@@ -10,6 +10,7 @@ import { AuthProvider } from "./AuthContext";
 import Footer from "./assets/components/footer";
 import NotFound from "./assets/pages/notFound";
 import BlogSinglePage from "./assets/pages/singleBlog";
+import ProtectedRoute from "./protectedRoutes";
 
 function App() {
   return (
@@ -20,7 +21,14 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/dashboard/*" element={<Dashboard />} />
+          <Route
+            path="/dashboard/*"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/blogs/:id" element={<BlogSinglePage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

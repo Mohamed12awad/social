@@ -198,7 +198,7 @@ exports.logOut = async (req, res) => {
   try {
     req.user = null;
 
-    res.clearCookie("token", { path: "/" });
+    // res.clearCookie("token", { path: "/" });
     res.cookie("token", "", {
       httpOnly: true,
       path: "/",
