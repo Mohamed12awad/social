@@ -1,0 +1,17 @@
+body {
+  background-color: #e6e6e673;
+  position: relative;
+}
+
+.carousel {
+  .carousel-inner {
+    height: calc(100% - 60px);
+    .carousel-item {
+      img {
+        width: 100%;
+        object-fit: cover;
+        height: 100%;
+      }
+    }
+  }
+}
