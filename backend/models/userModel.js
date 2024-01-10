@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const { isEmail } = require("validator");
-const bycrpt = require("bcrypt");
+const bcrypt = require("bcrypt");
 
 const userSchema = new Schema(
   {
@@ -51,16 +51,21 @@ const userSchema = new Schema(
 );
 
 userSchema.pre("save", async function (next) {
-  const salt = await bycrpt.genSalt();
-  this.password = await bycrpt.hash(this.password, salt);
-  next();
+  if (!this.isModified("password")) return next();
+  try {
+    const salt = await bcrypt.genSalt();
+    this.password = await bcrypt.hash(this.password, salt);
+    next();
+  } catch (err) {
+    next(err);
+  }
 });
 
 userSchema.statics.login = async function (reqEmail, reqPassword) {
   try {
     let userData = await this.findOne({ email: reqEmail });
     if (userData) {
-      const passwordMatch = await bycrpt.compare(
+      const passwordMatch = await bcrypt.compare(
         reqPassword,
         userData.password
       );
@@ -73,7 +78,7 @@ userSchema.statics.login = async function (reqEmail, reqPassword) {
       throw Error("User Not found");
     }
   } catch (err) {
-    console.log(err);
+    console.log(err.message);
   }
 };
 

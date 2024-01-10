@@ -31,12 +31,20 @@ const Dashboard = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  // const handleRefresh = async () => {
+  //   await fetchData();
+  // };
+
   return (
     <Container fluid>
       <Row>
         <Col sm="9">
           <Routes>
-            <Route path="/" element={<ProfileCard user={formData} />} />
+            <Route
+              path="/"
+              element={<ProfileCard user={formData} refreshData={fetchData} />}
+            />
             <Route path="/edit" element={<EditUser />} />
             <Route path="/blogs" element={<MyBlogs />} />
             <Route

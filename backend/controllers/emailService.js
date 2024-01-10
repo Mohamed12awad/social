@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 
 // Function to send a professional welcome email to a new user
 const sendWelcomeEmail = (userEmail, userName, token) => {
-  const verificationLink = `http://localhost:5000/api/users/verify/${token}`; // Replace with your domain
+  const verificationLink = `http://localhost:5000/api/users/verify/${token}`;
 
   const mailOptions = {
     from: config.mailer.u,

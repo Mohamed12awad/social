@@ -14,10 +14,15 @@ import {
   Button,
 } from "reactstrap";
 import { useAuth } from "../../../AuthContext";
+// import { useState } from "react";
 
-const ProfileCard = ({ user }) => {
+const ProfileCard = ({ user, refreshData }) => {
   const { token } = useAuth();
+  // const [seed, setSeed] = useState(false);
 
+  // const reset = () => {
+  //   setSeed(!seed);
+  // };
   const instance = axios.create({
     withCredentials: true,
     baseURL: "http://localhost:5000",
@@ -28,15 +33,21 @@ const ProfileCard = ({ user }) => {
     await instance.post(`/api/users/secondVerify/${e}`);
   };
 
+  const handleRemove = async (e) => {
+    await instance.delete(`/api/friends/remove/${e}`).then(() => {
+      refreshData();
+    });
+  };
   const handleDelete = async (e) => {
-    await instance.delete(`/api/friends/DeleteRequest/${e}`);
+    await instance.delete(`/api/friends/DeleteRequest/${e}`).then(() => {
+      refreshData();
+    });
   };
 
   const handleApprove = async (e) => {
-    await instance.post(`/api/friends/accept/${e}`);
-  };
-  const handleRemove = async (e) => {
-    await instance.delete(`/api/friends/remove/${e}`);
+    await instance.post(`/api/friends/accept/${e}`).then(() => {
+      refreshData();
+    });
   };
   // console.log(user);
   return (
@@ -51,8 +62,12 @@ const ProfileCard = ({ user }) => {
             <Row>
               <Col>
                 <ListGroup>
-                  <ListGroupItem>Member since: {user.createdAt}</ListGroupItem>
-                  <ListGroupItem>Last updated: {user.updatedAt}</ListGroupItem>
+                  <ListGroupItem>
+                    Member since: {user.createdAt.split("T")[0]}
+                  </ListGroupItem>
+                  <ListGroupItem>
+                    Last updated: {user.updatedAt.split("T")[0]}
+                  </ListGroupItem>
                   <ListGroupItem>
                     Verified: {user.isVerified ? "Yes" : "No"}
                   </ListGroupItem>
@@ -66,7 +81,7 @@ const ProfileCard = ({ user }) => {
                       user.friends.map((friendId, x) => (
                         <li
                           className="d-flex text-capitalize justify-content-between my-3"
-                          key={friendId}
+                          key={x}
                         >
                           <span>
                             {x + 1} : {friendId.username}
@@ -103,8 +118,8 @@ const ProfileCard = ({ user }) => {
           <CardBody>
             <ul className="list-unstyled">
               {user &&
-                user.friendRequestsReceived.map((i) => (
-                  <li key={i} className="d-flex justify-content-between my-3">
+                user.friendRequestsReceived.map((i, x) => (
+                  <li key={x} className="d-flex justify-content-between my-3">
                     <span>{i.username}</span>
                     <Button onClick={() => handleApprove(i._id)}>
                       approve
@@ -125,9 +140,10 @@ const ProfileCard = ({ user }) => {
           <CardBody>
             <ul className="list-unstyled">
               {user &&
-                user.friendRequestsSent.map((i) => (
-                  <li key={i} className="d-flex justify-content-between my-3">
+                user.friendRequestsSent.map((i, x) => (
+                  <li key={x} className="d-flex justify-content-between my-3">
                     <span>{i.username}</span>
+
                     <Button onClick={() => handleDelete(i._id)}>
                       Delete Request
                     </Button>

@@ -27,27 +27,30 @@ function NavBar(args) {
   const toggle = () => setIsOpen(!isOpen);
   let userState = isAuthenticated();
   const handleLogOut = async () => {
-    if (token) {
-      await axios
-        .get("http://localhost:5000/api/users/logout", {
-          headers: {
+    try {
+      if (token) {
+        await axios
+          .get("http://localhost:5000/api/users/logout", {
             withCredentials: true,
-            "Content-Type": "application/json",
-            Authorization: `${token}`,
-          },
-        })
-        .then((res) => {
-          if (res.status === 200) {
+            credentials: "include",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `${token}`,
+            },
+          })
+          .then(() => {
             signOut();
             window.location.reload();
-          }
-        });
+          });
+      }
+    } catch (err) {
+      console.log("logout error: ", err);
     }
   };
 
   useEffect(() => {
     userData().then((data) => setUser(data));
-  }, []);
+  }, [userState]);
 
   return (
     <div>

@@ -26,7 +26,7 @@ const Blogs = () => {
                 title={i.title}
                 body={i.content}
                 id={i._id}
-                author={i.author._id}
+                author={i.author.username}
               />
             </Col>
           ))}

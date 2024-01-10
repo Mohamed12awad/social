@@ -2,7 +2,9 @@ const Blog = require("../models/blogModel");
 
 exports.getAllBlogs = async (req, res) => {
   try {
-    const blog = await Blog.find().populate("author", "username");
+    const blog = await Blog.find()
+      .sort({ updatedAt: -1 })
+      .populate("author", "username");
     res.status(200).json(blog);
   } catch (err) {
     console.log(err);

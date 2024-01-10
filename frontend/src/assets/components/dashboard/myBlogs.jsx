@@ -20,7 +20,6 @@ const MyBlogs = () => {
       });
   }, [token]);
   //   console.log(blogs);
-  // console.log(blogs.map((i) => i));
 
   return (
     <Container className="mt-5">
@@ -39,6 +38,7 @@ const MyBlogs = () => {
                 title={i.title}
                 body={i.content}
                 id={i._id}
+                author={i.author.username}
               />
             </Col>
           ))}

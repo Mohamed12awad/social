@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
 import axios from "axios";
 
-const SingleBlog = ({ id, link, title, body, isVisable = false }) => {
+const SingleBlog = ({ id, link, title, body, author, isVisable = false }) => {
   const { token } = useAuth();
 
   const handleDelete = async (e) => {
     await axios.delete(`http://localhost:5000/api/blogs/${e}`, {
+      withCredentials: true,
       headers: {
-        withCredentials: true,
         "Content-Type": "application/json",
         Authorization: `${token}`,
       },
@@ -28,6 +28,10 @@ const SingleBlog = ({ id, link, title, body, isVisable = false }) => {
         <CardBody>
           <CardTitle tag="h5">{title}</CardTitle>
           <CardText className="text-truncate">{body}</CardText>
+          <hr />
+          <CardText className="fw-semibold text-truncate text-capitalize">
+            created by : {author}
+          </CardText>
           {isVisable && (
             <div className="d-flex justify-content-between">
               <Button

@@ -198,19 +198,19 @@ exports.logOut = async (req, res) => {
   try {
     req.user = null;
 
-    // res.clearCookie("token", { path: "/" });
+    res.clearCookie("token", { path: "/", httpOnly: true });
+
     res.cookie("token", "", {
       httpOnly: true,
       path: "/",
       expires: new Date(0),
     });
+
     // console.log(res.cookie);
-    // res.setHeader("Clear-Site-Data", '"cookies"');
 
     jwt.sign("", jwtSecret);
 
     res.status(200).json({ message: "successful sign out" });
-    res.redirect("/");
   } catch (err) {
     console.log(err);
   }

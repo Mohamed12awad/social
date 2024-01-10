@@ -42,10 +42,11 @@ exports.post_sendRequest = async (req, res) => {
   try {
     const sender = await User.findById(loggedUser);
     const recipient = await User.findById(recipientId);
-
+    // remember to make it into a switch statement to handle errors Efficiently
     if (
       !sender.friendRequestsSent.includes(recipientId) &&
       !sender.friendRequestsSent.includes(loggedUser) &&
+      !sender.friends.includes(recipientId) &&
       !recipient.friendRequestsReceived.includes(loggedUser) &&
       !recipient.friendRequestsReceived.includes(recipientId) &&
       !sender._id.equals(recipientId)
